@@ -73,7 +73,7 @@ msgstr "Name"
 
 msgctxt "field:nereid.permission,nereid_users:"
 msgid "Nereid Users"
-msgstr "Nereid Benutzer"
+msgstr "Website Benutzer"
 
 msgctxt "field:nereid.permission,rec_name:"
 msgid "Name"
@@ -493,7 +493,7 @@ msgstr "Kommentare / Hinweise für Übersetzer"
 
 msgctxt "model:ir.action,name:act_nereid_config"
 msgid "Configure Nereid"
-msgstr "Nereid konfigurieren"
+msgstr "Webshop konfigurieren"
 
 msgctxt "model:ir.action,name:act_website_form"
 msgid "Web Sites"
@@ -505,11 +505,11 @@ msgstr "Websitelokalisierung"
 
 msgctxt "model:ir.action,name:action_nereid_static_file_view"
 msgid "Nereid Static Files"
-msgstr "Nereid Statische Dateien"
+msgstr "Statische Dateien"
 
 msgctxt "model:ir.action,name:action_nereid_static_folder_view"
 msgid "Nereid Static Folders"
-msgstr "Nereid Statische Verzeichnisse"
+msgstr "Statische Verzeichnisse"
 
 msgctxt "model:ir.action,name:action_nereid_user_view"
 msgid "Web User"
@@ -543,7 +543,7 @@ msgstr "Dateien"
 
 msgctxt "model:ir.ui.menu,name:menu_nereid"
 msgid "Nereid"
-msgstr "Nereid"
+msgstr "Website"
 
 msgctxt "model:ir.ui.menu,name:menu_nereid_config_static_file"
 msgid "Files"
@@ -575,27 +575,27 @@ msgstr "Websitelokalisierung"
 
 msgctxt "model:nereid.permission,name:"
 msgid "Nereid Permissions"
-msgstr "Nereid Berechtigungen"
+msgstr "Website Berechtigungen"
 
 msgctxt "model:nereid.permission-nereid.user,name:"
 msgid "Nereid User Permissions"
-msgstr "Nereid Benutzer Berechtigungen"
+msgstr "Website Benutzerberechtigungen"
 
 msgctxt "model:nereid.static.file,name:"
 msgid "Static files for Nereid"
-msgstr "Statische Dateien für Nereid"
+msgstr "Statische Dateien"
 
 msgctxt "model:nereid.static.folder,name:"
 msgid "Static folder for Nereid"
-msgstr "Statisches Verzeichnis für Nereid"
+msgstr "Statisches Verzeichnis"
 
 msgctxt "model:nereid.user,name:"
 msgid "Nereid Users"
-msgstr "Nereid Benutzer"
+msgstr "Website Benutzer"
 
 msgctxt "model:nereid.user.anonymous,name:"
 msgid "Nereid Anonymous User Object"
-msgstr "Nereid Anonymer Benutzer Objekt"
+msgstr "Website Anonymer Benutzer"
 
 msgctxt "model:nereid.website,name:"
 msgid "One of the most powerful features of Nereid is the ability to"
@@ -603,7 +603,7 @@ msgstr "Eine der herausragenden Eigenschaften von Nereid ist die Fähigkeit zu"
 
 msgctxt "model:nereid.website-country.country,name:"
 msgid "Website Country Relations"
-msgstr "Website Länder Verknüpfungen"
+msgstr "Website - Länder"
 
 msgctxt "model:nereid.website-currency.currency,name:"
 msgid "Currencies to be made available on website"
@@ -615,7 +615,7 @@ msgstr "Sprachen, die auf der Website verfügbar sein sollen."
 
 msgctxt "model:nereid.website.config.start,name:"
 msgid "Nereid Config"
-msgstr "Nereid Konfiguration"
+msgstr "Website Konfiguration"
 
 msgctxt "model:nereid.website.locale,name:"
 msgid "Web Site Locale"
@@ -623,11 +623,11 @@ msgstr "Websitelokalisierung"
 
 msgctxt "model:res.group,name:group_nereid_admin"
 msgid "Nereid Administration"
-msgstr "Administration Nereid"
+msgstr "Administration Website"
 
 msgctxt "model:res.user,name:web_user"
 msgid "Nereid Web User"
-msgstr "Nereid Webbenutzer"
+msgstr "Webbenutzer"
 
 msgctxt "nereid:party.py:255"
 msgid "Address has been deleted successfully!"
@@ -668,34 +668,6 @@ msgstr "E-Mail"
 msgctxt "nereid:party.py:34"
 msgid "Phone"
 msgstr "Telefon"
-
-msgctxt "nereid:tests/test_i18n.py:127"
-msgid "en_US"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:157"
-msgid "Hi %(name)s"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:186"
-msgid "%(num)d apple"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:186"
-msgid "%(num)d apples"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:187"
-msgid "%(num)d apple"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:187"
-msgid "%(num)d apples"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:249"
-msgid "name"
-msgstr ""
 
 msgctxt "nereid:user.py:385"
 msgid ""
@@ -892,7 +864,7 @@ msgstr "Websites"
 
 msgctxt "view:party.party:"
 msgid "Nereid"
-msgstr "Nereid"
+msgstr "Website"
 
 msgctxt "view:party.party:"
 msgid "Web Users"
@@ -900,7 +872,7 @@ msgstr "Webbenutzer"
 
 msgctxt "wizard_button:nereid.website.config,start,end:"
 msgid "Cancel"
-msgstr "Annulliert"
+msgstr "Abbrechen"
 
 msgctxt "wizard_button:nereid.website.config,start,website:"
 msgid "Ok"
