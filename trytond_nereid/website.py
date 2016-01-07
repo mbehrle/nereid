@@ -226,7 +226,7 @@ class WebSite(ModelSQL, ModelView):
             failed_login.send(form=login_form)
 
             if request.is_xhr:
-                rv = jsonify(message="Bad credentials")
+                rv = jsonify(message=unicode(_('Bad credentials')))
                 rv.status_code = 401
                 return rv
 

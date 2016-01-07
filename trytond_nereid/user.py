@@ -300,7 +300,7 @@ class NereidUser(ModelSQL, ModelView):
         """
         if request.is_xhr or request.is_json:
             return jsonify(message=message), xhr_status_code
-        flash(_(message))
+        flash(message)
         return response
 
     @route(
@@ -320,12 +320,12 @@ class NereidUser(ModelSQL, ModelView):
             )
         except SignatureExpired:
             return self.build_response(
-                'The verification link has expired',
+                _('The verification link has expired'),
                 redirect(url_for('nereid.website.home')), 400
             )
         except BadSignature:
             return self.build_response(
-                'The verification token is invalid!',
+                _('The verification token is invalid!'),
                 redirect(url_for('nereid.website.home')), 400
             )
         else:
@@ -333,12 +333,12 @@ class NereidUser(ModelSQL, ModelView):
                 self.email_verified = True
                 self.save()
                 return self.build_response(
-                    'Your email has been verified!',
+                    _('Your email has been verified!'),
                     redirect(url_for('nereid.website.home')), 200
                 )
             else:
                 return self.build_response(
-                    'The verification token is invalid!',
+                    _('The verification token is invalid!'),
                     redirect(url_for('nereid.website.home')), 400
                 )
 
@@ -470,13 +470,13 @@ class NereidUser(ModelSQL, ModelView):
                 )
                 logout_user()
                 return cls.build_response(
-                    'Your password has been successfully changed! '
-                        'Please login again',
+                    _('Your password has been successfully changed! '
+                        'Please login again'),
                     redirect(url_for('nereid.website.login')), 200
                 )
             else:
                 return cls.build_response(
-                    'The current password you entered is invalid',
+                    _('The current password you entered is invalid'),
                     render_template(
                         'change-password.jinja', change_password_form=form
                     ), 400
@@ -507,12 +507,12 @@ class NereidUser(ModelSQL, ModelView):
                 )
             except SignatureExpired:
                 return self.build_response(
-                    'The password reset link has expired',
+                    _('The password reset link has expired'),
                     redirect(url_for('nereid.website.login')), 400
                 )
             except BadSignature:
                 return self.build_response(
-                    'Invalid reset password code',
+                    _('Invalid reset password code'),
                     redirect(url_for('nereid.website.login')), 400
                 )
             else:
@@ -522,8 +522,8 @@ class NereidUser(ModelSQL, ModelView):
 
                 self.write([self], {'password': form.password.data})
                 return self.build_response(
-                    'Your password has been successfully changed! '
-                    'Please login again',
+                    _('Your password has been successfully changed! '
+                    'Please login again'),
                     redirect(url_for('nereid.website.login')), 200
                 )
         elif form.errors:
@@ -589,14 +589,14 @@ class NereidUser(ModelSQL, ModelView):
                 ])
             except ValueError:
                 return cls.build_response(
-                    'Invalid email address',
+                    _('Invalid email address'),
                     render_template('reset-password.jinja'),
                     400
                 )
             nereid_user.send_reset_email()
             return cls.build_response(
-                'An email has been sent to your account for resetting'
-                ' your credentials',
+                _('An email has been sent to your account for resetting'
+                ' your credentials'),
                 redirect(url_for('nereid.website.login')), 200
             )
         elif form.errors:
@@ -793,7 +793,7 @@ class NereidUser(ModelSQL, ModelView):
         is sent as response, else a redirect to the login page is returned.
         """
         if request.is_xhr:
-            rv = jsonify(message="Bad credentials")
+            rv = jsonify(message=unicode(_('Bad credentials')))
             rv.status_code = 401
             return rv
         return redirect(
