@@ -839,7 +839,7 @@ msgstr "Falsche Logindaten"
 msgctxt "nereid:website.py:207"
 msgid "You are now logged in. Welcome %(name)s"
 msgstr ""
-"Sie sind nun angemeldet.\n"
+"Sie sind nun angemeldet. "
 "Willkommen %(name)s"
 
 msgctxt "nereid:website.py:222"
