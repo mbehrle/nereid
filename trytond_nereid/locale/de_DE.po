@@ -73,7 +73,7 @@ msgstr "Name"
 
 msgctxt "field:nereid.permission,nereid_users:"
 msgid "Nereid Users"
-msgstr "Website Benutzer"
+msgstr "Websitebenutzer"
 
 msgctxt "field:nereid.permission,rec_name:"
 msgid "Name"
@@ -591,7 +591,7 @@ msgstr "Statisches Verzeichnis"
 
 msgctxt "model:nereid.user,name:"
 msgid "Nereid Users"
-msgstr "Website Benutzer"
+msgstr "Websitebenutzer"
 
 msgctxt "model:nereid.user.anonymous,name:"
 msgid "Nereid Anonymous User Object"
@@ -668,34 +668,6 @@ msgstr "E-Mail"
 msgctxt "nereid:party.py:34"
 msgid "Phone"
 msgstr "Telefon"
-
-msgctxt "nereid:tests/test_i18n.py:127"
-msgid "en_US"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:157"
-msgid "Hi %(name)s"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:186"
-msgid "%(num)d apple"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:186"
-msgid "%(num)d apples"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:187"
-msgid "%(num)d apple"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:187"
-msgid "%(num)d apples"
-msgstr ""
-
-msgctxt "nereid:tests/test_i18n.py:249"
-msgid "name"
-msgstr ""
 
 msgctxt "nereid:user.py:323"
 msgid "The verification link has expired"
@@ -838,9 +810,7 @@ msgstr "Falsche Logindaten"
 
 msgctxt "nereid:website.py:207"
 msgid "You are now logged in. Welcome %(name)s"
-msgstr ""
-"Sie sind nun angemeldet. "
-"Willkommen %(name)s"
+msgstr "Sie sind nun angemeldet. Willkommen %(name)s"
 
 msgctxt "nereid:website.py:222"
 msgid "Your account has not been activated yet!"
