@@ -92,7 +92,8 @@ class NereidStaticFile(ModelSQL, ModelView):
 
     name = fields.Char('File Name', select=True, required=True)
     folder = fields.Many2One(
-        'nereid.static.folder', 'Folder', select=True, required=True
+        'nereid.static.folder', 'Folder', select=True, required=True,
+        ondelete='CASCADE',
     )
 
     #: This function field returns the field contents. This is useful if the
