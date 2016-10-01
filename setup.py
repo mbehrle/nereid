@@ -24,6 +24,9 @@ class SQLiteTest(Command):
         pass
 
     def run(self):
+        if self.distribution.tests_require:
+            self.distribution.fetch_build_eggs(self.distribution.tests_require)
+
         os.environ['TRYTOND_DATABASE_URI'] = 'sqlite://'
         os.environ['DB_NAME'] = ':memory:'
 
@@ -50,6 +53,9 @@ class PostgresTest(Command):
         pass
 
     def run(self):
+        if self.distribution.tests_require:
+            self.distribution.fetch_build_eggs(self.distribution.tests_require)
+
         os.environ['TRYTOND_DATABASE_URI'] = 'postgresql://'
         os.environ['DB_NAME'] = 'test_' + str(int(time.time()))
 
@@ -113,15 +119,14 @@ install_requires = [
     'pytz',
     'flask>=0.10',
     'flask-wtf',
-    'babel==2.0',  # TODO: unfreeze, when stable version is released
     'blinker',
     'speaklater',
     'Flask-Babel>=0.9',
-    'Flask-Login==0.2.11',
+    'Flask-Login',
 ]
 
 MODULE2PREFIX = {
-    'email_queue': 'openlabs',
+    'email_queue': 'fio',
 }
 
 for dep in info.get('depends', []):
@@ -146,17 +151,17 @@ tests_require = [
 setup(
     name='trytond_nereid',
     version=info.get('version'),
-    url='http://nereid.openlabs.co.in/docs/',
-    license='GPLv3',
-    author='Openlabs Technologies & Consulting (P) Limited',
-    author_email='info@openlabs.co.in',
+    url='http://www.fulfil.io',
+    license='BSD',
+    author='Fulfil.IO',
+    author_email='support@fulfil.io',
     description='Tryton - Web Framework',
     long_description=open('README.rst').read(),
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Framework :: Tryton',

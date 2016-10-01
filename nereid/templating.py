@@ -18,7 +18,7 @@ from email import Encoders, Charset
 import trytond.tools as tools
 from trytond.transaction import Transaction
 
-from .globals import request, current_app  # noqa
+from .globals import request, current_app, current_website  # noqa
 from .helpers import _rst_to_html_filter, make_crumbs
 
 
@@ -136,7 +136,7 @@ def render_template(template_name_or_list, **context):
     if current_app.template_prefix_website_name and \
             isinstance(template_name_or_list, basestring):
         template_name_or_list = [
-            '/'.join([request.nereid_website.name, template_name_or_list]),
+            '/'.join([current_website.name, template_name_or_list]),
             template_name_or_list
         ]
     return LazyRenderer(
@@ -196,7 +196,7 @@ class ModuleTemplateLoader(ChoiceLoader):
         if self._loaders is None:
             self._loaders = []
 
-            if not Transaction().cursor:
+            if not Transaction().connection.cursor():
                 contextmanager = Transaction().start(self.database_name, 0)
             else:
                 contextmanager = contextlib.nested(
@@ -204,9 +204,9 @@ class ModuleTemplateLoader(ChoiceLoader):
                     Transaction().reset_context()
                 )
             with contextmanager:
-                cursor = Transaction().cursor
+                cursor = Transaction().connection.cursor()
                 cursor.execute(
-                    "SELECT name FROM ir_module_module "
+                    "SELECT name FROM ir_module "
                     "WHERE state = 'installed'"
                 )
                 installed_module_list = [name for (name,) in cursor.fetchall()]

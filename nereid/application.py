@@ -34,6 +34,7 @@ from .ctx import RequestContext
 from .csrf import NereidCsrfProtect
 from .signals import transaction_start, transaction_stop, transaction_commit
 from .routing import Rule
+from .globals import current_locale, current_website
 
 
 class Nereid(Flask):
@@ -360,8 +361,6 @@ class Nereid(Flask):
             ))
             config.update_etc(self.tryton_configfile)
 
-        register_classes()
-
         # Load and initialise pool
         Database = backend.get('Database')
         self._database = Database(self.database_name).connect()
@@ -427,20 +426,12 @@ class Nereid(Flask):
             Cache.resets(self.database_name)
 
         with Transaction().start(self.database_name, 0, readonly=True):
-            Website = Pool().get('nereid.website')
-            website = Website.get_from_host(req.host)
-
-            user = website.application_user.id
-            website_context = website.get_context()
+            user = current_website.application_user.id
+            website_context = current_website.get_context()
             website_context.update({
-                'company': website.company.id,
+                'company': current_website.company.id,
             })
-
-            language = 'en_US'
-            if website:
-                # If this is a request specific to a website
-                # then take the locale from the website
-                language = website.get_current_locale(req).language.code
+            language = current_locale.language.code
 
         # pop locale if specified in the view_args
         req.view_args.pop('locale', None)
@@ -456,19 +447,19 @@ class Nereid(Flask):
                     rv = self._dispatch_request(
                         req, language=language, active_id=active_id
                     )
-                    txn.cursor.commit()
+                    txn.commit()
                     transaction_commit.send(self)
                 except DatabaseOperationalError:
                     # Strict transaction handling may cause this.
                     # Rollback and Retry the whole transaction if within
                     # max retries, or raise exception and quit.
-                    txn.cursor.rollback()
+                    txn.rollback()
                     if count:
                         continue
                     raise
                 except Exception:
                     # Rollback and raise any other exception
-                    txn.cursor.rollback()
+                    txn.rollback()
                     raise
                 else:
                     return rv
@@ -529,7 +520,11 @@ class Nereid(Flask):
         rv.filters.update(**NEREID_TEMPLATE_FILTERS)
 
         # add the locale sensitive url_for of nereid
-        rv.globals.update(url_for=url_for)
+        rv.globals.update(
+            url_for=url_for,
+            current_locale=current_locale,
+            current_website=current_website,
+        )
 
         if self.cache:
             # Setup the bytecode cache

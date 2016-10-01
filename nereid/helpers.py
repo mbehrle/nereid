@@ -22,7 +22,7 @@ from werkzeug import Headers, wrap_file, redirect, abort
 from werkzeug.exceptions import NotFound
 from flask.ext.login import login_required      # noqa
 
-from .globals import current_app, request
+from .globals import current_app, request, current_locale, current_website, current_user  # noqa
 
 
 _SLUGIFY_STRIP_RE = re.compile(r'[^\w\s-]')
@@ -60,8 +60,11 @@ def url_for(endpoint, **values):
             DeprecationWarning, stacklevel=2
         )
 
-    if 'locale' not in values and request.nereid_website.locales:
-        values['locale'] = request.nereid_locale.code
+    # 'static' is Flask's default endpoint for static files.
+    # There is no need to set language in URL for static files
+    if endpoint != 'static' and \
+            'locale' not in values and current_website.locales:
+        values['locale'] = current_locale.code
 
     return flask_url_for(endpoint, **values)
 
@@ -88,7 +91,7 @@ class permissions_required(object):
     def __call__(self, function):
         @wraps(function)
         def wrapper(*args, **kwargs):
-            if request.nereid_user.has_permissions(
+            if current_user.has_permissions(
                     self.perm_all, self.perm_any
             ):
                 return function(*args, **kwargs)
@@ -393,8 +396,8 @@ def root_transaction_if_required(function):
     def decorated_function(self, *args, **kwargs):
 
         transaction = None
-        if Transaction().cursor is None:
-            # Start transaction since cursor is None
+        if Transaction().connection is None:
+            # Start transaction since connection is None
             transaction = Transaction().start(
                 self.database_name, 0, readonly=True
             )
@@ -402,7 +405,8 @@ def root_transaction_if_required(function):
             return function(self, *args, **kwargs)
         finally:
             if transaction is not None:
-                Transaction().stop()
+                # TODO: Find some better way close transaction
+                transaction.__exit__(None, None, None)
 
     return decorated_function
 

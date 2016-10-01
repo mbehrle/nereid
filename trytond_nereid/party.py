@@ -7,12 +7,9 @@ from werkzeug import redirect, abort
 from jinja2 import TemplateNotFound
 
 from nereid import request, url_for, render_template, login_required, flash, \
-    jsonify, route, current_user
+    jsonify, route, current_user, current_website
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool, PoolMeta
-from trytond.transaction import Transaction
-from trytond import backend
-from sql import As, Literal, Column
 from .user import RegistrationForm
 from .i18n import _
 
@@ -38,7 +35,7 @@ class AddressForm(Form):
 
         # Fill country choices while form is initialized
         self.country.choices = [
-            (c.id, c.name) for c in request.nereid_website.countries
+            (c.id, c.name) for c in current_website.countries
         ]
 
 
@@ -48,45 +45,6 @@ class Address:
     __metaclass__ = PoolMeta
 
     registration_form = RegistrationForm
-
-    @classmethod
-    def __register__(cls, module_name):
-        pool = Pool()
-        Party = pool.get('party.party')
-        ContactMechanism = pool.get('party.contact_mechanism')
-        TableHandler = backend.get('TableHandler')
-        cursor = Transaction().cursor
-        table = TableHandler(cursor, cls, module_name)
-        party = Party.__table__()
-        address = cls.__table__()
-        mechanism = ContactMechanism.__table__()
-
-        super(Address, cls).__register__(module_name)
-
-        # Migration from 2.8: move phone and email to contact mechanisms
-        for column in ['email', 'phone']:
-            if table.column_exist(column):
-                join = address.join(
-                    party, condition=(party.id == address.party)
-                )
-                select = join.select(
-                    address.create_date, address.create_uid,
-                    address.write_date, address.write_uid,
-                    As(Literal(column), 'type'),
-                    As(Column(address, column), 'value'), address.party,
-                    As(Literal(True), 'active'),
-                    where=(Column(address, column) != '')
-                )
-                insert = mechanism.insert(
-                    columns=[
-                            mechanism.create_date,
-                            mechanism.create_uid, mechanism.write_date,
-                            mechanism.write_uid, mechanism.type,
-                            mechanism.value, mechanism.party, mechanism.active,
-                    ], values=select)
-                cursor.execute(*insert)
-
-                table.column_rename(column, '%s_deprecated' % column)
 
     @classmethod
     def get_address_form(cls, address=None):
@@ -111,8 +69,8 @@ class Address:
                 phone=address.party.phone
             )
         else:
-            address_name = "" if request.nereid_user.is_anonymous() else \
-                request.nereid_user.display_name
+            address_name = "" if current_user.is_anonymous else \
+                current_user.display_name
             form = AddressForm(request.form, name=address_name)
 
         return form
@@ -140,7 +98,7 @@ class Address:
         form = cls.get_address_form()
 
         if request.method == 'POST' and form.validate():
-            party = request.nereid_user.party
+            party = current_user.party
             address, = cls.create([{
                 'name': form.name.data,
                 'street': form.street.data,
@@ -202,7 +160,7 @@ class Address:
 
         form = cls.get_address_form()
 
-        if address not in (a.id for a in request.nereid_user.party.addresses):
+        if address not in (a.id for a in current_user.party.addresses):
             # Check if the address is in the list of addresses of the
             # current user's party
             abort(403)
@@ -210,7 +168,7 @@ class Address:
         address = cls(address)
 
         if request.method == 'POST' and form.validate():
-            party = request.nereid_user.party
+            party = current_user.party
             cls.write([address], {
                 'name': form.name.data,
                 'street': form.street.data,
@@ -320,7 +278,7 @@ class ContactMechanism(ModelSQL, ModelView):
         form = cls.get_form()
         if form.validate_on_submit():
             cls.create([{
-                'party': request.nereid_user.party.id,
+                'party': current_user.party.id,
                 'type': form.type.data,
                 'value': form.value.data,
                 'comment': form.comment.data,
@@ -344,7 +302,7 @@ class ContactMechanism(ModelSQL, ModelView):
         """
         ContactMechanism = Pool().get('party.contact_mechanism')
 
-        if self.party == request.nereid_user.party:
+        if self.party == current_user.party:
             ContactMechanism.delete([self])
         else:
             abort(403)

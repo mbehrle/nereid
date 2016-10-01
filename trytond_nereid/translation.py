@@ -26,8 +26,7 @@ from trytond.wizard import Wizard
 from trytond.transaction import Transaction
 from trytond.pool import Pool, PoolMeta
 from trytond.cache import Cache
-from trytond.tools import file_open
-from trytond.const import RECORD_CACHE_SIZE
+from trytond.tools import file_open, cursor_dict
 from trytond.ir.translation import TrytonPOFile
 
 __all__ = [
@@ -107,7 +106,10 @@ class Translation:
                 raise ValueError('Unknown translation type: %s' %
                     translation.type)
             key2ids.setdefault(key, []).append(translation.id)
-            if len(module_translations) <= RECORD_CACHE_SIZE:
+            if (
+                len(module_translations) <=
+                Transaction().context.get('_record_cache_size')
+            ):
                 id2translation[translation.id] = translation
 
         def override_translation(ressource_id, new_translation):
@@ -145,12 +147,13 @@ class Translation:
         # Make a first loop to retreive translation ids in the right order to
         # get better read locality and a full usage of the cache.
         translation_ids = []
-        if len(module_translations) <= RECORD_CACHE_SIZE:
+        record_cache_size = Transaction().context.get('_record_cache_size')
+        if len(module_translations) <= record_cache_size:
             processes = (True,)
         else:
             processes = (False, True)
         for processing in processes:
-            if processing and len(module_translations) > RECORD_CACHE_SIZE:
+            if processing and len(module_translations) > record_cache_size:
                 id2translation = dict((t.id, t)
                     for t in cls.browse(translation_ids))
             for entry in pofile:
@@ -316,7 +319,7 @@ class Translation:
         if trans != -1:
             return trans
 
-        cursor = Transaction().cursor
+        cursor = Transaction().connection.cursor()
         table = cls.__table__()
         where = (
             (table.lang == lang) &
@@ -386,7 +389,7 @@ class TranslationSet:
         from trytond.modules import create_graph, get_module_list, \
             MODULES_PATH, EGG_MODULES
 
-        IrModule = Pool().get('ir.module.module')
+        IrModule = Pool().get('ir.module')
 
         packages = list(create_graph(get_module_list())[0])[::-1]
         installed_module_list = map(
@@ -628,7 +631,7 @@ class TranslationUpdate:
         pool = Pool()
         Translation = pool.get('ir.translation')
 
-        cursor = Transaction().cursor
+        cursor = Transaction().connection.cursor()
         lang = self.start.language.code
         translation = Translation.__table__()
 
@@ -652,7 +655,7 @@ class TranslationUpdate:
                 translation.type.in_(types))
         ))
         to_create = []
-        for row in cursor.dictfetchall():
+        for row in cursor_dict(cursor):
             to_create.append({
                 'name': row['name'],
                 'res_id': row['res_id'],

@@ -4,6 +4,7 @@ import random
 import string
 import urllib
 import base64
+import warnings
 
 try:
     import hashlib
@@ -14,21 +15,22 @@ except ImportError:
 import pytz
 from flask_wtf import Form, RecaptchaField
 from wtforms import TextField, SelectField, validators, PasswordField
-from flask.ext.login import logout_user, AnonymousUserMixin, login_url
+from flask.ext.login import logout_user, AnonymousUserMixin, login_url, \
+    login_user
 from werkzeug import redirect, abort
 
 from nereid import request, url_for, render_template, login_required, flash, \
-    jsonify, route
+    jsonify, route, current_website, current_user
 from nereid.ctx import has_request_context
 from nereid.globals import current_app
 from nereid.signals import registration
 from nereid.templating import render_email
-from trytond.model import ModelView, ModelSQL, fields
+from trytond.model import ModelView, ModelSQL, fields, Unique
 from trytond.pool import Pool
 from trytond.pyson import Eval, Bool, Not
 from trytond.transaction import Transaction
 from trytond.config import config
-from trytond import backend
+from trytond.rpc import RPC
 from itsdangerous import URLSafeSerializer, TimestampSigner, SignatureExpired, \
     BadSignature, TimedJSONWebSignatureSerializer
 from .i18n import _
@@ -106,14 +108,19 @@ class NereidUser(ModelSQL, ModelView):
     Nereid Users
     """
     __name__ = "nereid.user"
-    _rec_name = 'display_name'
+    _rec_name = 'name'
 
     party = fields.Many2One(
         'party.party', 'Party', required=True,
         ondelete='CASCADE', select=1
     )
 
-    display_name = fields.Char('Display Name', required=True)
+    name = fields.Char('Name')
+    display_name = fields.Function(
+        fields.Char("Name"),
+        getter="get_display_name", setter="set_display_name",
+        searcher="search_display_name",
+    )
 
     #: The email of the user is also the login name/username of the user
     email = fields.Char("e-Mail", select=1)
@@ -147,6 +154,43 @@ class NereidUser(ModelSQL, ModelView):
     email_verified = fields.Boolean("Email Verified")
     active = fields.Boolean('Active')
 
+    @classmethod
+    def get_display_name(cls, records, name):
+        "Returns the display name"
+        warnings.warn(
+            "Nereid display_name field is deprecated, "
+            "use name instead",
+            DeprecationWarning, stacklevel=2
+        )
+        res = {}
+        for record in records:
+            res[record.id] = record.name
+        return res
+
+    @classmethod
+    def set_display_name(cls, records, name, value):
+        "Sets name field for instance"
+        warnings.warn(
+            "Nereid display_name field is deprecated, "
+            "use name instead",
+            DeprecationWarning, stacklevel=2
+        )
+        cls.write(records, {
+            'name': value
+        })
+
+    @classmethod
+    def search_display_name(cls, name, clause):
+        return [('name',) + tuple(clause[1:])]
+
+    @classmethod
+    def search_rec_name(cls, name, clause):
+        return ['OR',
+            ('party',) + tuple(clause[1:]),
+            ('display_name',) + tuple(clause[1:]),
+            ('email',) + tuple(clause[1:]),
+        ]
+
     @staticmethod
     def default_email_verified():
         return False
@@ -161,26 +205,6 @@ class NereidUser(ModelSQL, ModelView):
         if has_request_context():
             return False
         return True
-
-    @classmethod
-    def __register__(cls, module_name):
-        TableHandler = backend.get("TableHandler")
-        table = TableHandler(Transaction().cursor, cls, module_name)
-        user = cls.__table__()
-
-        super(NereidUser, cls).__register__(module_name)
-
-        # Migrations
-        if table.column_exist('activation_code'):
-            # Migration for activation_code field
-            # Set the email_verification and active based on activation code
-            user.update(
-                columns=[user.active, user.email_verified],
-                values=[True, True],
-                where=(user.activation_code == None)
-            )
-            # Finally drop the column
-            table.drop_column('activation_code', exception=True)
 
     def serialize(self, purpose=None):
         """
@@ -236,10 +260,14 @@ class NereidUser(ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(NereidUser, cls).__setup__()
+        table = cls.__table__()
         cls._sql_constraints += [
-            ('unique_email_company', 'UNIQUE(email, company)',
+            ('unique_email_company', Unique(table, table.email, table.company),
                 'Email must be unique in a company'),
         ]
+        cls.__rpc__.update({
+            'match_password': RPC(readonly=True, instantiate=0),
+        })
 
     @property
     def _signer(self):
@@ -379,7 +407,7 @@ class NereidUser(ModelSQL, ModelView):
             with Transaction().set_context(active_test=False):
                 existing = cls.search([
                     ('email', '=', registration_form.email.data),
-                    ('company', '=', request.nereid_website.company.id),
+                    ('company', '=', current_website.company.id),
                 ])
             if existing:
                 message = _(
@@ -405,7 +433,7 @@ class NereidUser(ModelSQL, ModelView):
                     'display_name': registration_form.name.data,
                     'email': registration_form.email.data,
                     'password': registration_form.password.data,
-                    'company': request.nereid_website.company.id,
+                    'company': current_website.company.id,
                 }
                 )
                 nereid_user.save()
@@ -449,6 +477,88 @@ class NereidUser(ModelSQL, ModelView):
             config.get('email', 'from'), self.email, email_message.as_string()
         )
 
+    def get_magic_login_link(self, **options):
+        """
+        Returns a direct login link for user
+        """
+        return url_for(
+            'nereid.user.magic_login',
+            sign=self._get_sign('magic-login'),
+            active_id=self.id,
+            **options
+        )
+
+    @classmethod
+    @route('/send-magic-link/<email>', methods=['GET'], readonly=False)
+    def send_magic_login_link(cls, email):
+        """
+        Send a magic login email to the user
+        """
+        EmailQueue = Pool().get('email.queue')
+
+        try:
+            nereid_user, = cls.search([
+                ('email', '=', email),
+                ('company', '=', current_website.company.id),
+            ])
+        except ValueError:
+            # This email was not found so, let user know about this
+            message = "No user with email %s was found!" % email
+            current_app.logger.debug(message)
+        else:
+            message = "Please check your mail and follow the link"
+            email_message = render_email(
+                config.get('email', 'from'),
+                email, _('Magic Signin Link'),
+                text_template='emails/magic-login-text.jinja',
+                html_template='emails/magic-login-html.jinja',
+                nereid_user=nereid_user
+            )
+            EmailQueue.queue_mail(
+                config.get('email', 'from'), email, email_message.as_string()
+            )
+
+        return cls.build_response(
+            message, redirect(url_for('nereid.website.home')), 200
+        )
+
+    @route(
+        "/magic-login/<int:active_id>/<sign>",
+        methods=["GET"], readonly=False
+    )
+    def magic_login(self, sign, max_age=5 * 60):
+        """
+        Let the user log in without password if the token
+        is valid (less than 5 min old)
+        """
+        try:
+            unsigned = self._serializer.loads(
+                self._signer.unsign(sign, max_age=max_age),
+                salt='magic-login'
+            )
+        except SignatureExpired:
+            return self.build_response(
+                'This link has expired',
+                redirect(url_for('nereid.checkout.sign_in')), 400
+            )
+        except BadSignature:
+            return self.build_response(
+                'Invalid login link',
+                redirect(url_for('nereid.checkout.sign_in')), 400
+            )
+        else:
+            if not self.id == unsigned:
+                current_app.logger.debug('Invalid link')
+                abort(403)
+
+            login_user(self.load_user(self.id))
+            # TODO: Set this used token as expired to prevent using
+            # it more than once
+            return self.build_response(
+                'You have been successfully logged in',
+                redirect(url_for('nereid.website.home')), 200
+            )
+
     @classmethod
     @route("/change-password", methods=["GET", "POST"])
     @login_required
@@ -463,9 +573,9 @@ class NereidUser(ModelSQL, ModelView):
         form = ChangePasswordForm()
 
         if request.method == 'POST' and form.validate():
-            if request.nereid_user.match_password(form.old_password.data):
+            if current_user.match_password(form.old_password.data):
                 cls.write(
-                    [request.nereid_user],
+                    [current_user],
                     {'password': form.password.data}
                 )
                 logout_user()
@@ -585,7 +695,7 @@ class NereidUser(ModelSQL, ModelView):
             try:
                 nereid_user, = cls.search([
                     ('email', '=', form.email.data),
-                    ('company', '=', request.nereid_website.company.id),
+                    ('company', '=', current_website.company.id),
                 ])
             except ValueError:
                 return cls.build_response(
@@ -662,7 +772,7 @@ class NereidUser(ModelSQL, ModelView):
         with Transaction().set_context(active_test=False):
             users = cls.search([
                 ('email', '=', email),
-                ('company', '=', request.nereid_website.company.id),
+                ('company', '=', current_website.company.id),
             ])
 
         if not users:
@@ -715,7 +825,7 @@ class NereidUser(ModelSQL, ModelView):
                 pass
             else:
                 user = cls.authenticate(*header_val.split(':', 1))
-                if user and user.is_active():
+                if user and user.is_active:
                     return user
 
         # TODO: Digest authentication
@@ -752,7 +862,7 @@ class NereidUser(ModelSQL, ModelView):
             # should also be invalid.
             return None
 
-        if user.is_active():
+        if user.is_active:
             # Login only if the login_user method returns True for the user
             return user
 
@@ -770,7 +880,7 @@ class NereidUser(ModelSQL, ModelView):
             expires_in=current_app.token_validity_duration
         )
         local_txn = None
-        if Transaction().cursor is None:
+        if Transaction().connection is None:
             # Flask-Login can call get_auth_token outside the context
             # of a nereid transaction. If that is the case, launch a
             # new transaction here.
@@ -782,7 +892,8 @@ class NereidUser(ModelSQL, ModelView):
             return serializer.dumps({'id': self.id, 'password': self.password})
         finally:
             if local_txn is not None:
-                Transaction().stop()
+                # TODO: Find a better way to close transaction
+                local_txn.__exit__(None, None, None)
 
     @classmethod
     def unauthorized_handler(cls):
@@ -800,6 +911,7 @@ class NereidUser(ModelSQL, ModelView):
             login_url(current_app.login_manager.login_view, request.url)
         )
 
+    @property
     def is_authenticated(self):
         """
         Returns True if the user is authenticated, i.e. they have provided
@@ -808,9 +920,11 @@ class NereidUser(ModelSQL, ModelView):
         """
         return bool(self.id)
 
+    @property
     def is_active(self):
         return bool(self.active)
 
+    @property
     def is_anonymous(self):
         return not self.id
 
@@ -928,10 +1042,10 @@ class NereidUser(ModelSQL, ModelView):
         """
         User profile
         """
-        user_form = ProfileForm(obj=request.nereid_user)
+        user_form = ProfileForm(obj=current_user)
         if user_form.validate_on_submit():
             cls.write(
-                [request.nereid_user], {
+                [current_user], {
                     'display_name': user_form.display_name.data,
                     'timezone': user_form.timezone.data,
                 }
@@ -939,7 +1053,7 @@ class NereidUser(ModelSQL, ModelView):
             flash('Your profile has been updated.')
 
         if request.is_xhr or request.is_json:
-            return jsonify(request.nereid_user.serialize())
+            return jsonify(current_user.serialize())
 
         return render_template(
             'profile.jinja', user_form=user_form, active_type_name="general"
@@ -983,8 +1097,9 @@ class Permission(ModelSQL, ModelView):
     @classmethod
     def __setup__(cls):
         super(Permission, cls).__setup__()
+        table = cls.__table__()
         cls._sql_constraints += [
-            ('unique_value', 'UNIQUE(value)',
+            ('unique_value', Unique(table, table.value),
                 'Permissions must be unique by value'),
         ]
 
