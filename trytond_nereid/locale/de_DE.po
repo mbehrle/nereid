@@ -547,7 +547,7 @@ msgstr "Medien"
 
 msgctxt "model:ir.ui.menu,name:menu_nereid"
 msgid "Nereid"
-msgstr "Website"
+msgstr "Web"
 
 msgctxt "model:ir.ui.menu,name:menu_nereid_config_static_file"
 msgid "Files"
@@ -595,7 +595,7 @@ msgstr "Statisches Verzeichnis"
 
 msgctxt "model:nereid.user,name:"
 msgid "Nereid Users"
-msgstr "Websitebenutzer"
+msgstr "Webbenutzer"
 
 msgctxt "model:nereid.user.anonymous,name:"
 msgid "Nereid Anonymous User Object"
@@ -619,7 +619,7 @@ msgstr "Sprachen, die auf der Website verfügbar sein sollen."
 
 msgctxt "model:nereid.website.config.start,name:"
 msgid "Nereid Config"
-msgstr "Website Konfiguration"
+msgstr "Web Konfiguration"
 
 msgctxt "model:nereid.website.locale,name:"
 msgid "Web Site Locale"
