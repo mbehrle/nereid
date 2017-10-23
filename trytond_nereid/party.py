@@ -245,6 +245,14 @@ class Party(ModelSQL, ModelView):
             }])
         return mechanisms[0]
 
+    @classmethod
+    def copy(cls, parties, default=None):
+        if default is None:
+            default = {}
+        default = default.copy()
+        default['nereid_users'] = None
+        return super(Party, cls).copy(parties, default=default)
+
 
 class ContactMechanismForm(Form):
     type = SelectField('Type', [validators.DataRequired()])
