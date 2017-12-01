@@ -16,7 +16,7 @@
     <record model="ir.ui.view" id="nereid_user_form2">
         <field name="model">nereid.user</field>
         <field name="type">form</field>
-        <field name="priority">20</field>
+        <field name="priority" eval="20"/>
         <field name="name">nereid_user_form2</field>
     </record>
 
