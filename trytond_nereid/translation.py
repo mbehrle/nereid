@@ -29,6 +29,8 @@ from trytond.cache import Cache
 from trytond.tools import file_open, cursor_dict
 from trytond.ir.translation import TrytonPOFile
 
+logger = logging.getLogger(__name__)
+
 __all__ = [
     'Translation',
     'TranslationSet',
@@ -436,7 +438,6 @@ class TranslationSet:
               {{ _(Welcome) }} {# trans: In the top banner #}
         """
         extract_options = cls._get_nereid_template_extract_options()
-        logger = logging.getLogger('nereid.translation')
 
         for module, directory in cls._get_installed_module_directories():
             template_dir = os.path.join(directory, 'templates')
