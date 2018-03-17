@@ -7,7 +7,7 @@ from werkzeug import abort, redirect
 from werkzeug.routing import Map, Submount
 from flask_wtf import Form
 from wtforms import TextField, PasswordField, validators, BooleanField
-from flask.ext.login import login_user, logout_user
+from flask_login import login_user, logout_user
 
 from nereid import jsonify, flash, render_template, url_for, cache, \
     current_user, route, current_website

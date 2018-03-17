@@ -15,7 +15,7 @@ except ImportError:
 import pytz
 from flask_wtf import Form, RecaptchaField
 from wtforms import TextField, SelectField, validators, PasswordField
-from flask.ext.login import logout_user, AnonymousUserMixin, login_url, \
+from flask_login import logout_user, AnonymousUserMixin, login_url, \
     login_user
 from werkzeug import redirect, abort
 

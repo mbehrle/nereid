@@ -20,7 +20,7 @@ from flask.helpers import (_PackageBoundObject, locked_cached_property,  # noqa
         get_flashed_messages, flash as _flash, url_for as flask_url_for)
 from werkzeug import Headers, wrap_file, redirect, abort
 from werkzeug.exceptions import NotFound
-from flask.ext.login import login_required      # noqa
+from flask_login import login_required      # noqa
 
 from .globals import current_app, request, current_locale, current_website, current_user  # noqa
 

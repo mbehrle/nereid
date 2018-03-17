@@ -13,9 +13,9 @@ from flask.globals import _request_ctx_stack, current_app
 from flask.helpers import locked_cached_property
 from jinja2 import MemcachedBytecodeCache
 from werkzeug import import_string, abort
-import flask.ext.login
-from flask.ext.login import LoginManager
-from flask.ext.babel import Babel
+import flask_login
+from flask_login import LoginManager
+from flask_babel import Babel
 
 from trytond import backend
 from trytond.pool import Pool
@@ -217,7 +217,7 @@ class Nereid(Flask):
 
         # Monkey patch the url_for method from flask-login to use
         # the nereid specific url_for
-        flask.ext.login.url_for = url_for
+        flask_login.url_for = url_for
 
         self.template_context_processors[None].append(
             self.get_context_processors()

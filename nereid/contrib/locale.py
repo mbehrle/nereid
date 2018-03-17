@@ -2,9 +2,9 @@
 # this repository contains the full copyright notices and license terms.
 import gettext
 
-import flask.ext.babel
+import flask_babel
 from speaklater import is_lazy_string, make_lazy_string
-from flask.ext.babel import Babel  # noqa
+from flask_babel import Babel  # noqa
 from babel import Locale
 from pytz import timezone
 from nereid.globals import _request_ctx_stack
@@ -112,7 +112,7 @@ def get_translations():
     return translations
 
 
-flask.ext.babel.get_translations = get_translations
+flask_babel.get_translations = get_translations
 
 
 def get_locale():
@@ -141,7 +141,7 @@ def get_locale():
     return locale
 
 
-flask.ext.babel.get_locale = get_locale
+flask_babel.get_locale = get_locale
 
 
 def get_timezone():
@@ -174,7 +174,7 @@ def get_timezone():
     return tzinfo
 
 
-flask.ext.babel.get_timezone = get_timezone
+flask_babel.get_timezone = get_timezone
 
 
 def make_lazy_gettext(module):
