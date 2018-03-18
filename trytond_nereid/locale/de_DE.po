@@ -633,218 +633,218 @@ msgctxt "model:res.user,name:web_user"
 msgid "Nereid Web User"
 msgstr "Webbenutzer"
 
-msgctxt "nereid:party.py:213"
+msgctxt "nereid:party.py:215"
 msgid "Address has been deleted successfully!"
 msgstr "Die Adresse wurde erfolgreich entfernt"
 
-msgctxt "nereid:party.py:23"
+msgctxt "nereid:party.py:25"
 msgid "Name"
 msgstr "Name"
 
-msgctxt "nereid:party.py:24"
+msgctxt "nereid:party.py:26"
 msgid "Street"
 msgstr "Anschrift 1"
 
-msgctxt "nereid:party.py:25"
+msgctxt "nereid:party.py:27"
 msgid "Street (Bis)"
 msgstr "Anschrift 2"
 
-msgctxt "nereid:party.py:26"
+msgctxt "nereid:party.py:28"
 msgid "Post Code"
 msgstr "Postleitzahl"
 
-msgctxt "nereid:party.py:27"
+msgctxt "nereid:party.py:29"
 msgid "City"
 msgstr "Stadt"
 
-msgctxt "nereid:party.py:28"
+msgctxt "nereid:party.py:30"
 msgid "Country"
 msgstr "Staat"
 
-msgctxt "nereid:party.py:29"
+msgctxt "nereid:party.py:31"
 msgid "State/County"
 msgstr "Land/Gegend"
 
-msgctxt "nereid:party.py:30"
+msgctxt "nereid:party.py:32"
 msgid "Email"
 msgstr "E-Mail"
 
-msgctxt "nereid:party.py:31"
+msgctxt "nereid:party.py:33"
 msgid "Phone"
 msgstr "Telefon"
 
-msgctxt "nereid:user.py:352"
+msgctxt "nereid:user.py:354"
 msgid "The verification link has expired"
 msgstr "Der Verifizierungslink ist nicht mehr gültig"
 
-msgctxt "nereid:user.py:357"
+msgctxt "nereid:user.py:359"
 msgid "The verification token is invalid!"
 msgstr "Der Verifizierungstoken ist ungültig"
 
-msgctxt "nereid:user.py:365"
+msgctxt "nereid:user.py:367"
 msgid "Your email has been verified!"
 msgstr "Ihre E-Mailadresse wurde verifiziert"
 
-msgctxt "nereid:user.py:370"
+msgctxt "nereid:user.py:372"
 msgid "The verification token is invalid!"
 msgstr "Der Verifizierungstoken ist ungültig"
 
-msgctxt "nereid:user.py:414"
+msgctxt "nereid:user.py:416"
 msgid ""
 "A registration already exists with this email. Please contact customer care"
 msgstr ""
 "Es existiert bereits eine Registrierung mit dieser E-Mailadresse. Bitte "
 "setzen Sie sich mit dem Kundensupport in Verbindung."
 
-msgctxt "nereid:user.py:43"
-msgid "Name"
-msgstr "Name"
-
-msgctxt "nereid:user.py:44"
-msgid "e-mail"
-msgstr "E-Mail"
-
-msgctxt "nereid:user.py:443"
+msgctxt "nereid:user.py:445"
 msgid "Registration Complete. Check your email for activation"
 msgstr ""
 "Registrierung abgeschlossen. Bitte überprüfen Sie Ihre E-Mails für den "
 "Aktivierungscode."
 
 msgctxt "nereid:user.py:45"
+msgid "Name"
+msgstr "Name"
+
+msgctxt "nereid:user.py:46"
+msgid "e-mail"
+msgstr "E-Mail"
+
+msgctxt "nereid:user.py:47"
 msgid "New Password"
 msgstr "Neues Passwort"
 
-msgctxt "nereid:user.py:456"
+msgctxt "nereid:user.py:458"
 msgid "Form has errors"
 msgstr "Das Formular weist Fehler auf"
 
-msgctxt "nereid:user.py:47"
+msgctxt "nereid:user.py:49"
 msgid "Passwords must match"
 msgstr "Die Passwörter müssen übereinstimmen"
 
-msgctxt "nereid:user.py:472"
+msgctxt "nereid:user.py:474"
 msgid "Account Activation"
 msgstr "Kontoaktivierung"
 
-msgctxt "nereid:user.py:48"
+msgctxt "nereid:user.py:50"
 msgid "Confirm Password"
 msgstr "Passwort bestätigen"
 
-msgctxt "nereid:user.py:513"
+msgctxt "nereid:user.py:515"
 msgid "Magic Signin Link"
 msgstr "Magischer Loginlink"
 
-msgctxt "nereid:user.py:584"
+msgctxt "nereid:user.py:586"
 msgid "Your password has been successfully changed! Please login again"
 msgstr ""
 "Ihr Passwort wurde erfolgreich geändert.\n"
 "Bitte melden Sie sich erneut an."
 
-msgctxt "nereid:user.py:590"
+msgctxt "nereid:user.py:592"
 msgid "The current password you entered is invalid"
 msgstr "Das eingegebene Passwort ist ungültig"
 
-msgctxt "nereid:user.py:621"
+msgctxt "nereid:user.py:623"
 msgid "The password reset link has expired"
 msgstr "Der Passwortlink ist nicht mehr gültig"
 
-msgctxt "nereid:user.py:626"
+msgctxt "nereid:user.py:628"
 msgid "Invalid reset password code"
 msgstr "Ungültiger Code für Passwortrücksetzung"
 
-msgctxt "nereid:user.py:63"
-msgid "New Password"
-msgstr "Neues Passwort"
-
-msgctxt "nereid:user.py:636"
+msgctxt "nereid:user.py:638"
 msgid "Your password has been successfully changed! Please login again"
 msgstr ""
 "Ihr Passwort wurde erfolgreich geändert.\n"
 "Bitte melden Sie sich erneut an."
 
-msgctxt "nereid:user.py:643"
+msgctxt "nereid:user.py:645"
 msgid "Passwords must match"
 msgstr "Die Passwörter müssen übereinstimmen"
 
 msgctxt "nereid:user.py:65"
+msgid "New Password"
+msgstr "Neues Passwort"
+
+msgctxt "nereid:user.py:67"
 msgid "Passwords must match"
 msgstr "Die Passwörter müssen übereinstimmen"
 
-msgctxt "nereid:user.py:66"
+msgctxt "nereid:user.py:68"
 msgid "Repeat Password"
 msgstr "Passwort wiederholen"
 
-msgctxt "nereid:user.py:669"
+msgctxt "nereid:user.py:671"
 msgid "The activation link has expired"
 msgstr "Der Aktivierungslink ist nicht mehr gültig"
 
-msgctxt "nereid:user.py:671"
+msgctxt "nereid:user.py:673"
 msgid "The activation token is invalid!"
 msgstr "Der Aktivierungstoken ist ungültig"
 
-msgctxt "nereid:user.py:677"
+msgctxt "nereid:user.py:679"
 msgid "Your account has been activated. Please login now."
 msgstr "Ihr Konto wurde aktiviert. Bitte melden Sie sich jetzt an."
 
-msgctxt "nereid:user.py:679"
+msgctxt "nereid:user.py:681"
 msgid "Invalid Activation Code"
 msgstr "Ungültiger Aktivierungscode"
 
-msgctxt "nereid:user.py:703"
+msgctxt "nereid:user.py:705"
 msgid "Invalid email address"
 msgstr "Ungültige E-Mailadresse"
 
-msgctxt "nereid:user.py:709"
+msgctxt "nereid:user.py:711"
 msgid "An email has been sent to your account for resetting your credentials"
 msgstr ""
 "Eine E-Mail mit weiteren Anweisungen wurde an die in Ihrem Konto hinterlegte"
 " Adresse geschickt."
 
-msgctxt "nereid:user.py:716"
+msgctxt "nereid:user.py:718"
 msgid "Invalid email address."
 msgstr "Ungültige E-Mailadresse"
 
-msgctxt "nereid:user.py:73"
+msgctxt "nereid:user.py:75"
 msgid "Old Password"
 msgstr "Altes Passwort"
 
-msgctxt "nereid:user.py:730"
+msgctxt "nereid:user.py:732"
 msgid "Account Password Reset"
 msgstr "Kontopasswort zurücksetzen"
 
-msgctxt "nereid:user.py:908"
+msgctxt "nereid:user.py:910"
 msgid "Bad credentials"
 msgstr "Ungültige Logindaten"
 
-msgctxt "nereid:website.py:199"
+msgctxt "nereid:website.py:200"
 msgid "You are now logged in. Welcome %(name)s"
 msgstr "Sie sind nun angemeldet. Willkommen %(name)s"
 
-msgctxt "nereid:website.py:214"
+msgctxt "nereid:website.py:215"
 msgid "Your account has not been activated yet!"
 msgstr "Ihr Konto wurde noch nicht aktiviert"
 
-msgctxt "nereid:website.py:216"
+msgctxt "nereid:website.py:217"
 msgid "Invalid login credentials"
 msgstr "Ungültige Logindaten"
 
-msgctxt "nereid:website.py:221"
+msgctxt "nereid:website.py:222"
 msgid "Bad credentials"
 msgstr "Ungültige Logindaten"
 
-msgctxt "nereid:website.py:233"
+msgctxt "nereid:website.py:234"
 msgid "You have been logged out successfully. Thanks for visiting us"
 msgstr "Sie sind erfolgreich abgemeldet worden. Danke für Ihren Besuch!"
 
-msgctxt "nereid:website.py:31"
+msgctxt "nereid:website.py:32"
 msgid "e-mail"
 msgstr "E-Mail"
 
-msgctxt "nereid:website.py:32"
+msgctxt "nereid:website.py:33"
 msgid "Password"
 msgstr "Passwort"
 
-msgctxt "nereid:website.py:33"
+msgctxt "nereid:website.py:34"
 msgid "Remember me"
 msgstr "Angemeldet bleiben"
 
