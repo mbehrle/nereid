@@ -33,9 +33,11 @@ from trytond.config import config
 from trytond.rpc import RPC
 from itsdangerous import URLSafeSerializer, TimestampSigner, SignatureExpired, \
     BadSignature, TimedJSONWebSignatureSerializer
-from .i18n import _
+from nereid.contrib.locale import make_lazy_gettext
 
 __all__ = ['NereidUser', 'NereidAnonymousUser', 'Permission', 'UserPermission']
+
+_ = make_lazy_gettext('nereid')
 
 
 class RegistrationForm(Form):

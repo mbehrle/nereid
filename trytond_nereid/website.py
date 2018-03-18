@@ -19,12 +19,13 @@ from trytond.model import ModelView, ModelSQL, fields, Unique
 from trytond.transaction import Transaction
 from trytond.pool import Pool
 from trytond.cache import Cache
+from nereid.contrib.locale import make_lazy_gettext
 
-from .i18n import _
 
 __all__ = ['WebSite', 'WebSiteLocale', 'WebsiteCountry',
            'WebsiteCurrency', 'WebsiteWebsiteLocale']
 
+_ = make_lazy_gettext('nereid')
 
 class LoginForm(Form):
     "Default Login Form"

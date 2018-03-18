@@ -11,7 +11,9 @@ from nereid import request, url_for, render_template, login_required, flash, \
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool, PoolMeta
 from .user import RegistrationForm
-from .i18n import _
+from nereid.contrib.locale import make_lazy_gettext
+
+_ = make_lazy_gettext('nereid')
 
 __all__ = ['Address', 'Party', 'ContactMechanism']
 
