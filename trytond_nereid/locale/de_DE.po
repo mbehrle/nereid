@@ -706,6 +706,10 @@ msgctxt "nereid:user.py:45"
 msgid "Name"
 msgstr "Name"
 
+msgctxt "nereid:user.py:458"
+msgid "Form has errors"
+msgstr "Das Formular weist Fehler auf"
+
 msgctxt "nereid:user.py:46"
 msgid "e-mail"
 msgstr "E-Mail"
@@ -714,17 +718,13 @@ msgctxt "nereid:user.py:47"
 msgid "New Password"
 msgstr "Neues Passwort"
 
-msgctxt "nereid:user.py:458"
-msgid "Form has errors"
-msgstr "Das Formular weist Fehler auf"
+msgctxt "nereid:user.py:474"
+msgid "Account Activation"
+msgstr "Kontoaktivierung"
 
 msgctxt "nereid:user.py:49"
 msgid "Passwords must match"
 msgstr "Die Passwörter müssen übereinstimmen"
-
-msgctxt "nereid:user.py:474"
-msgid "Account Activation"
-msgstr "Kontoaktivierung"
 
 msgctxt "nereid:user.py:50"
 msgid "Confirm Password"
@@ -770,10 +770,6 @@ msgctxt "nereid:user.py:67"
 msgid "Passwords must match"
 msgstr "Die Passwörter müssen übereinstimmen"
 
-msgctxt "nereid:user.py:68"
-msgid "Repeat Password"
-msgstr "Passwort wiederholen"
-
 msgctxt "nereid:user.py:671"
 msgid "The activation link has expired"
 msgstr "Der Aktivierungslink ist nicht mehr gültig"
@@ -785,6 +781,10 @@ msgstr "Der Aktivierungstoken ist ungültig"
 msgctxt "nereid:user.py:679"
 msgid "Your account has been activated. Please login now."
 msgstr "Ihr Konto wurde aktiviert. Bitte melden Sie sich jetzt an."
+
+msgctxt "nereid:user.py:68"
+msgid "Repeat Password"
+msgstr "Passwort wiederholen"
 
 msgctxt "nereid:user.py:681"
 msgid "Invalid Activation Code"
@@ -804,13 +804,13 @@ msgctxt "nereid:user.py:718"
 msgid "Invalid email address."
 msgstr "Ungültige E-Mailadresse"
 
-msgctxt "nereid:user.py:75"
-msgid "Old Password"
-msgstr "Altes Passwort"
-
 msgctxt "nereid:user.py:732"
 msgid "Account Password Reset"
 msgstr "Kontopasswort zurücksetzen"
+
+msgctxt "nereid:user.py:75"
+msgid "Old Password"
+msgstr "Altes Passwort"
 
 msgctxt "nereid:user.py:910"
 msgid "Bad credentials"
