@@ -2,7 +2,7 @@
 # this repository contains the full copyright notices and license terms.
 from trytond.pool import Pool
 
-from .party import Address, Party, ContactMechanism
+from .party import Address, Party, PartyErase, ContactMechanism
 from .user import NereidUser, Permission, UserPermission, NereidAnonymousUser
 from .website import WebSite, WebSiteLocale, WebsiteCountry, \
     WebsiteCurrency, WebsiteWebsiteLocale
@@ -41,6 +41,7 @@ def register():
     )
     Pool.register(
         NereidConfig,
+        PartyErase,
         TranslationSet,
         TranslationUpdate,
         TranslationClean,

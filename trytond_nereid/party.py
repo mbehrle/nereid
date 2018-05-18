@@ -15,7 +15,7 @@ from nereid.contrib.locale import make_lazy_gettext
 
 _ = make_lazy_gettext('nereid')
 
-__all__ = ['Address', 'Party', 'ContactMechanism']
+__all__ = ['Address', 'Party', 'ContactMechanism', 'PartyErase']
 
 
 class AddressForm(Form):
@@ -321,3 +321,18 @@ class ContactMechanism(ModelSQL, ModelView):
                 'success': True
             })
         return redirect(request.referrer)
+
+
+class PartyErase:
+    __metaclass__ = PoolMeta
+    __name__ = 'party.erase'
+
+    def to_erase(self, party_id):
+        pool = Pool()
+        User = pool.get('nereid.user')
+        to_erase = super(PartyErase, self).to_erase(party_id)
+        to_erase.append(
+            (User, [('party', '=', party_id)], True,
+                ['email'],
+                [None]))
+        return to_erase
