@@ -333,6 +333,6 @@ class PartyErase:
         to_erase = super(PartyErase, self).to_erase(party_id)
         to_erase.append(
             (User, [('party', '=', party_id)], True,
-                ['email'],
-                [None]))
+                ['name', 'email'],
+                [None, None]))
         return to_erase
