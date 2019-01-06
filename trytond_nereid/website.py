@@ -19,6 +19,8 @@ from trytond.model import ModelView, ModelSQL, fields, Unique
 from trytond.transaction import Transaction
 from trytond.pool import Pool
 from trytond.cache import Cache
+#from trytond.cache import MemoryCache as Cache
+from trytond.tools import memoize
 from nereid.contrib.locale import make_lazy_gettext
 
 
@@ -355,14 +357,16 @@ class WebSite(ModelSQL, ModelView):
         """
         cls._url_adapter_cache.clear()
 
+    @memoize(10)
     def get_url_adapter(self, app):
         """
         Returns the URL adapter for the website
         """
-        cache_rv = self._url_adapter_cache.get(self.id)
+        #cache_rv = self._url_adapter_cache.get(self.id)
 
-        if cache_rv is not None:
-            return cache_rv
+        #if cache_rv is not None:
+        #    return cache_rv
+
 
         url_rules = app.get_urls()[:]
 
@@ -392,7 +396,7 @@ class WebSite(ModelSQL, ModelView):
         for rule in app.url_map._rules:
             url_map.add(rule.empty())
 
-        self._url_adapter_cache.set(self.id, url_map)
+        #self._url_adapter_cache.set(self.id, url_map)
 
         return url_map
 
