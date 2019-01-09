@@ -420,11 +420,12 @@ class Nereid(Flask):
            and req.method == 'OPTIONS':
             return self.make_default_options_response()
 
-        with Transaction().start(self.database_name, 0):
+        transaction = Transaction()
+        with transaction.start(self.database_name, 0):
             Cache.clean(self.database_name)
             Cache.resets(self.database_name)
 
-        with Transaction().start(self.database_name, 0, readonly=True):
+        with transaction.start(self.database_name, 0, readonly=True):
             user = current_website.application_user.id
             website_context = current_website.get_context()
             website_context.update({
@@ -437,7 +438,7 @@ class Nereid(Flask):
         active_id = req.view_args.pop('active_id', None)
 
         for count in range(int(config.get('database', 'retry')), -1, -1):
-            with Transaction().start(
+            with transaction.start(
                     self.database_name, user,
                     context=website_context,
                     readonly=rule.is_readonly) as txn:
