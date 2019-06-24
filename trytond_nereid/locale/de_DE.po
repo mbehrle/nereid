@@ -816,35 +816,35 @@ msgctxt "nereid:user.py:910"
 msgid "Bad credentials"
 msgstr "Ungültige Logindaten"
 
-msgctxt "nereid:website.py:200"
+msgctxt "nereid:website.py:202"
 msgid "You are now logged in. Welcome %(name)s"
 msgstr "Sie sind nun angemeldet. Willkommen %(name)s"
 
-msgctxt "nereid:website.py:215"
+msgctxt "nereid:website.py:217"
 msgid "Your account has not been activated yet!"
 msgstr "Ihr Konto wurde noch nicht aktiviert"
 
-msgctxt "nereid:website.py:217"
+msgctxt "nereid:website.py:219"
 msgid "Invalid login credentials"
 msgstr "Ungültige Logindaten"
 
-msgctxt "nereid:website.py:222"
+msgctxt "nereid:website.py:224"
 msgid "Bad credentials"
 msgstr "Ungültige Logindaten"
 
-msgctxt "nereid:website.py:234"
+msgctxt "nereid:website.py:236"
 msgid "You have been logged out successfully. Thanks for visiting us"
 msgstr "Sie sind erfolgreich abgemeldet worden. Danke für Ihren Besuch!"
 
-msgctxt "nereid:website.py:32"
+msgctxt "nereid:website.py:34"
 msgid "e-mail"
 msgstr "E-Mail"
 
-msgctxt "nereid:website.py:33"
+msgctxt "nereid:website.py:35"
 msgid "Password"
 msgstr "Passwort"
 
-msgctxt "nereid:website.py:34"
+msgctxt "nereid:website.py:36"
 msgid "Remember me"
 msgstr "Angemeldet bleiben"
 
