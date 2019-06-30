@@ -715,8 +715,8 @@ msgid "e-mail"
 msgstr "E-Mail"
 
 msgctxt "nereid:user.py:47"
-msgid "New Password"
-msgstr "Neues Passwort"
+msgid "Password"
+msgstr "Passwort"
 
 msgctxt "nereid:user.py:474"
 msgid "Account Activation"
